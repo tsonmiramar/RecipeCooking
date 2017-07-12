@@ -1,0 +1,9 @@
+<app-header (tabClickEvent)="gotoTab($event)"></app-header>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <app-recipes *ngIf="destPage === 'recipe'"></app-recipes>
+      <app-shopping-list *ngIf="destPage === 'shopping-list'"></app-shopping-list>
+    </div>
+  </div>
+</div>
