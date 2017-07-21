@@ -5,9 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  destPage = 'recipe';
-  gotoTab(dest: string){
-    this.destPage = dest;
-  }
-}
+export class AppComponent {}
