@@ -18,7 +18,7 @@
           <button class="btn btn-success" type="submit" [disabled]="!ingredientEditForm.valid">
               {{ editMode ? 'Update': 'Add'}}
           </button>
-          <button class="btn btn-danger" type="button">Delete</button>
+          <button class="btn btn-danger" type="button" (click)="onDeleteIngredient()">Delete</button>
           <button class="btn btn-primary" type="button" (click)="onClearInput()">Clear</button>
         </div>
       </div>

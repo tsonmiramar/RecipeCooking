@@ -22,4 +22,9 @@ export class ShoppingListService{
         this.pushIngredient(ingredient);
         this.ingredientChanged.next(this.getIngredients());
     }
+
+    deleteAndEmitIngredients(ingredientIndex:number){
+        this.ingredients.splice(ingredientIndex, 1);
+        this.ingredientChanged.next(this.getIngredients());
+    }
 }
