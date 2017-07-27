@@ -17,12 +17,14 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     //Reactively initialize the edit form
     this.ingredientEditForm = new FormGroup({
+      'id' : new FormControl(null),
       'name' : new FormControl(null,Validators.required),
       'amount': new FormControl(null, [Validators.required,this.positiveAmountValidator.bind(this)])
     });
   
     this.shoppingListService.editedIngredient.subscribe((data:{index:number,ingredient: Ingredient})=>{
       this.editMode = true;
+      this.ingredientEditForm.get('id').setValue(data.index);
       this.ingredientEditForm.get('name').setValue(data.ingredient.name);
       this.ingredientEditForm.get('amount').setValue(data.ingredient.amount);
     });
@@ -34,15 +36,21 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
   
   onSubmitForm(){
-    
+    if ( this.editMode ){
+        this.updateIngredient();
+    }
+    else{
+      this.addIngredient();
+    }
   }
+
   addIngredient(){
     this.shoppingListService.addAndEmitIngredients(new Ingredient(this.ingredientEditForm.get("name").value, this.ingredientEditForm.get('amount').value));
     this.ingredientEditForm.reset();
   }
 
-  updateIngredient(index: number){
-    this.shoppingListService.updateAndEmitIngredients(index, new Ingredient(this.ingredientEditForm.get("name").value, this.ingredientEditForm.get('amount').value));
+  updateIngredient(){
+    this.shoppingListService.updateAndEmitIngredients(this.ingredientEditForm.get('id').value, new Ingredient(this.ingredientEditForm.get("name").value, this.ingredientEditForm.get('amount').value));
   }
 
   onClearInput(){

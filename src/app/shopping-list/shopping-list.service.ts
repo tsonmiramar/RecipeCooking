@@ -14,8 +14,7 @@ export class ShoppingListService{
     }
 
     updateAndEmitIngredients(index:number, updatedIngredient: Ingredient){
-        this.ingredients[index].name = updatedIngredient.name;
-        this.ingredients[index].amount = updatedIngredient.amount;
+        this.ingredients[index] = updatedIngredient;
         this.ingredientChanged.next(this.getIngredients());
     }
 

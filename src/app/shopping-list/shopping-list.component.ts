@@ -19,7 +19,7 @@ export class ShoppingListComponent implements OnInit {
     });
   }
 
-  emitIngredient(ingredient: Ingredient){
-    this.shoppingListService.editedIngredient.next(ingredient);
+  emitIngredient(index: number, ingredient: Ingredient){
+    this.shoppingListService.editedIngredient.next({index,ingredient});
   }
 }

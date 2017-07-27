@@ -36,6 +36,6 @@ export class RecipeService{
       this.shoppingListService.pushIngredient(element);
     });
 
-    this.shoppingListService.addedIngredient.next(this.shoppingListService.getIngredients());
+    this.shoppingListService.ingredientChanged.next(this.shoppingListService.getIngredients());
   }
 } 
