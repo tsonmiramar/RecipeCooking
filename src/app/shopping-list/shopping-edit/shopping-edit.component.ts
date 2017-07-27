@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Ingredient } from '../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms'
+import { Subscription } from 'rxjs/Subscription'
 
 @Component({
   selector: 'app-shopping-edit',
@@ -11,6 +12,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms'
 export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   ingredientEditForm : FormGroup;
+  ingredientEditSubscription : Subscription;
   editMode: boolean = false;
   constructor(private shoppingListService: ShoppingListService) { }
 
@@ -22,7 +24,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       'amount': new FormControl(null, [Validators.required,this.positiveAmountValidator.bind(this)])
     });
   
-    this.shoppingListService.editedIngredient.subscribe((data:{index:number,ingredient: Ingredient})=>{
+    this.ingredientEditSubscription = this.shoppingListService.editedIngredient.subscribe((data:{index:number,ingredient: Ingredient})=>{
       this.editMode = true;
       this.ingredientEditForm.get('id').setValue(data.index);
       this.ingredientEditForm.get('name').setValue(data.ingredient.name);
@@ -32,7 +34,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.shoppingListService.editedIngredient.unsubscribe();
+    this.ingredientEditSubscription.unsubscribe();
   }
   
   onSubmitForm(){
