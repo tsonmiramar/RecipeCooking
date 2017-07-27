@@ -57,6 +57,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   onClearInput(){
     this.editMode = false;
+    this.ingredientEditForm.reset();
   }
 
   positiveAmountValidator(control: FormControl): {[error: string] : any}{
