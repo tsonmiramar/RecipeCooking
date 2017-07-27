@@ -42,20 +42,21 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     else{
       this.addIngredient();
     }
+
+    this.ingredientEditForm.reset();
   }
 
   addIngredient(){
     this.shoppingListService.addAndEmitIngredients(new Ingredient(this.ingredientEditForm.get("name").value, this.ingredientEditForm.get('amount').value));
-    this.ingredientEditForm.reset();
   }
 
   updateIngredient(){
     this.shoppingListService.updateAndEmitIngredients(this.ingredientEditForm.get('id').value, new Ingredient(this.ingredientEditForm.get("name").value, this.ingredientEditForm.get('amount').value));
+    this.editMode = false;
   }
 
   onClearInput(){
     this.editMode = false;
-    this.ingredientEditForm.reset();
   }
 
   positiveAmountValidator(control: FormControl): {[error: string] : any}{
