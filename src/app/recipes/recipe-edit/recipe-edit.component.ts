@@ -32,6 +32,10 @@ export class RecipeEditComponent implements OnInit {
     }))
   }
 
+  onDeleteIngredient(id: number){
+    (<FormArray>this.recipeEditForm.get('ingredients')).removeAt(id);
+  }
+
   onSubmit(){
     let updateRecipe: Recipe = new Recipe(this.recipeEditForm.get('name').value, this.recipeEditForm.get('description').value,this.recipeEditForm.get('imagePath').value,[]);
     (<FormArray>this.recipeEditForm.get('ingredients')).controls.forEach(ingredientCtrl => {
