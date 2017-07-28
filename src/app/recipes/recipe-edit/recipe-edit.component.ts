@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { Ingredient } from '../../shared/ingredient.model';
 import { Recipe } from '../recipe.model';
@@ -15,7 +15,7 @@ export class RecipeEditComponent implements OnInit {
   editMode: boolean = false;
 
   recipeEditForm: FormGroup;
-  constructor(private recipeService: RecipeService, private route: ActivatedRoute) { }
+  constructor(private recipeService: RecipeService, private route: ActivatedRoute, private router: Router ) { }
 
   ngOnInit() {
     this.route.params.subscribe((params:Params)=>{
@@ -23,6 +23,29 @@ export class RecipeEditComponent implements OnInit {
       this.editMode = params['id'] != null;
       this.buildForm(); 
     });
+  }
+
+  onAddIngredient(){
+    (<FormArray>this.recipeEditForm.get('ingredients')).push(new FormGroup({
+      'ingredientName': new FormControl('',Validators.required),
+      'ingredientAmount': new FormControl('', Validators.required)
+    }))
+  }
+
+  onSubmit(){
+    let updateRecipe: Recipe = new Recipe(this.recipeEditForm.get('name').value, this.recipeEditForm.get('description').value,this.recipeEditForm.get('imagePath').value,[]);
+    (<FormArray>this.recipeEditForm.get('ingredients')).controls.forEach(ingredientCtrl => {
+      updateRecipe.ingredients.push(new Ingredient(ingredientCtrl.get('ingredientName').value,ingredientCtrl.get('ingredientAmount').value));
+    });
+
+    if (this.editMode){
+      this.recipeService.setRecipebyId(this.recipeId,updateRecipe);
+    }
+    else{
+      this.recipeService.addNewRecipe(updateRecipe);
+    }
+
+    this.router.navigate(['/recipes']);
   }
 
   private buildForm(){
@@ -34,8 +57,8 @@ export class RecipeEditComponent implements OnInit {
 
       editRecipe.ingredients.forEach(ingredient => {
         ingredientFormArray.push(new FormGroup({
-          'ingredientName': new FormControl(ingredient.name),
-          'ingredientAmount': new FormControl(ingredient.amount)
+          'ingredientName': new FormControl(ingredient.name, Validators.required),
+          'ingredientAmount': new FormControl(ingredient.amount, Validators.required)
         }))
       });
     }

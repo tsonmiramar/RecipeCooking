@@ -2,11 +2,11 @@ import { EventEmitter, Injectable } from '@angular/core'
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
+import { Subject } from 'rxjs/Subject'
 
 @Injectable()
 export class RecipeService{
-  recipeSelected = new EventEmitter<Recipe>();
-  
+  recipesChanged: Subject<Recipe[]> = new Subject<Recipe[]>();
   private recipes: Recipe[] = [
     new Recipe('A Test Recipe', 'This is simply a test', 'https://upload.wikimedia.org/wikipedia/commons/1/15/Recipe_logo.jpeg',
       [
@@ -31,6 +31,17 @@ export class RecipeService{
   getRecipebyId(id: number){
     return this.recipes[id];
   }
+
+  setRecipebyId(id: number, newRecipe:Recipe){
+    this.recipes[id] = newRecipe;
+    this.recipesChanged.next(this.getRecipe());
+  }
+
+  addNewRecipe(recipe:Recipe){
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.getRecipe());
+  }
+
   addIngredientToShoppingList(ingredients: Ingredient[]){
     ingredients.forEach(element => {
       this.shoppingListService.pushIngredient(element);
