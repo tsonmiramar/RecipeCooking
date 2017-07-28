@@ -42,6 +42,11 @@ export class RecipeService{
     this.recipesChanged.next(this.getRecipe());
   }
 
+  deleteRecipe(id: number){
+    this.recipes.splice(id,1);
+    this.recipesChanged.next(this.getRecipe());
+  }
+  
   addIngredientToShoppingList(ingredients: Ingredient[]){
     ingredients.forEach(element => {
       this.shoppingListService.pushIngredient(element);
