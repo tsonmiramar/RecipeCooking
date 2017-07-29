@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-signin',
@@ -21,10 +22,6 @@ export class SigninComponent implements OnInit {
 
   onSubmit(){
     this.authService.signInUser(this.signinForm.value['email'], this.signinForm.value['password'])
-      .then((response: any)=>{
-        alert('Signin sucessfully');
-        this.router.navigate(['/recipes']);
-      })
       .catch((error: any)=>{
         alert('Sigin Failed!');
         if ( error.code === 'auth/wrong-password'){
