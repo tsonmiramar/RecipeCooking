@@ -12,7 +12,9 @@ export class DataStorageService {
 
   saveData(){
     let authToken:string = this.authService.getToken();
-    this.http.put('https://recipecooking-fce59.firebaseio.com/recipes.json?auth='+authToken,this.recipeService.getRecipe())
+    let userId = this.authService.getCurrentUserId();
+    
+    this.http.put('https://recipecooking-fce59.firebaseio.com/'+userId+'.json?auth='+authToken,this.recipeService.getRecipe())
     .subscribe((response: Response)=>{
       if ( response.status === 200 ){
         alert('Save Data Successfully!');
@@ -25,7 +27,8 @@ export class DataStorageService {
 
   fetchData(){
     let authToken:string = this.authService.getToken();
-    this.http.get('https://recipecooking-fce59.firebaseio.com/recipes.json?auth='+authToken)
+    let userId = this.authService.getCurrentUserId();
+    this.http.get('https://recipecooking-fce59.firebaseio.com/'+userId+'.json?auth='+authToken)
     .map((response:Response)=>{
       const recipes: Recipe[] = response.json();
       for ( let recipe of recipes){

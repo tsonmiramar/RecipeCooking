@@ -39,6 +39,10 @@ export class AuthService {
   }
 
   isAuthenticated(){
-    return localStorage.getItem('currentUserToken');
+    return localStorage.getItem('currentUserToken') != null;
   }
+
+  getCurrentUserId(){
+    return firebase.auth().currentUser.uid;
+  }  
 }
