@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AuthService {
 
-  private currentUserToken: string = '';
+  private currentUserToken: string;
   constructor(private router: Router) { }
 
   signUpUser(email:string, password:string){
@@ -36,5 +36,15 @@ export class AuthService {
     })
 
     return this.currentUserToken;
+  }
+
+  logOut(){
+    firebase.auth().signOut();
+    this.currentUserToken = null;
+    this.router.navigate(['/signin']);
+  }
+
+  isAuthenticated(){
+    return this.currentUserToken != null;
   }
 }

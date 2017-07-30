@@ -17,7 +17,12 @@ export class SigninComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
-    this.buildForm();
+    if ( this.authService.isAuthenticated() ){
+      this.router.navigate(['/']);
+    }
+    else{
+      this.buildForm();
+    }
   }
 
   onSubmit(){
