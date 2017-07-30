@@ -9,6 +9,9 @@ import { ShoppingListService } from './shopping-list/shopping-list.service';
 import { DataStorageService } from './shared/data-storage.service';
 import { AuthService } from './auth/auth.service';
 
+import { AuthGuard} from './_guard/auth.guard';
+import { SigninGuard } from './_guard/signin.guard';
+
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { RecipesComponent } from './recipes/recipes.component';
@@ -45,7 +48,7 @@ import { SigninComponent } from './auth/signin/signin.component';
     HttpModule,
     AppRoutingModule
   ],
-  providers: [RecipeService,ShoppingListService,DataStorageService, AuthService],
+  providers: [RecipeService,ShoppingListService,DataStorageService, AuthService, AuthGuard, SigninGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

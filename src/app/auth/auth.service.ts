@@ -4,8 +4,6 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
-
-  private currentUserToken: string;
   constructor(private router: Router) { }
 
   signUpUser(email:string, password:string){
@@ -21,30 +19,26 @@ export class AuthService {
     return firebase.auth().signInWithEmailAndPassword(email,password)
       .then((response: any)=>{
         console.log(response);
+        
         firebase.auth().currentUser.getIdToken().then((token: string)=>{
-          this.currentUserToken = token;
+          localStorage.setItem('currentUserToken',token);
+          alert('Signin sucessfully');
+          this.router.navigate(['/recipes']);
         });
-
-        alert('Signin sucessfully');
-        this.router.navigate(['/recipes']);
       });
   }
 
   getToken(){
-    firebase.auth().currentUser.getIdToken().then((token: string)=>{
-      this.currentUserToken = token;
-    })
-
-    return this.currentUserToken;
+    return localStorage.getItem('currentUserToken');
   }
 
   logOut(){
     firebase.auth().signOut();
-    this.currentUserToken = null;
+    localStorage.removeItem('currentUserToken');
     this.router.navigate(['/signin']);
   }
 
   isAuthenticated(){
-    return this.currentUserToken != null;
+    return localStorage.getItem('currentUserToken');
   }
 }

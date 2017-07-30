@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from '../_guard/auth.guard';
+import { SigninGuard } from '../_guard/signin.guard';
 
 import { RecipesComponent} from '../recipes/recipes.component';
 import { ShoppingListComponent } from '../shopping-list/shopping-list.component';
@@ -12,15 +14,15 @@ import { SigninComponent } from '../auth/signin/signin.component';
 
 const appRoutes: Routes = [
   {path: '', redirectTo: '/signin', pathMatch: 'full'},
-  {path: 'recipes', component: RecipesComponent, children: [
+  {path: 'recipes', component: RecipesComponent, canActivate:[AuthGuard], canActivateChild:[AuthGuard] , children: [
     {path: '', component: RecipeStartComponent},
     {path: 'new', component: RecipeEditComponent},
     {path: ':id', component: RecipeDetailComponent},
     {path: ':id/edit', component: RecipeEditComponent}
   ]},
-  {path: 'shopping-list', component: ShoppingListComponent},
+  {path: 'shopping-list', component: ShoppingListComponent, canActivate:[AuthGuard]},
   {path: 'signup', component: SignupComponent},
-  {path: 'signin', component: SigninComponent}
+  {path: 'signin', component: SigninComponent, canActivate:[SigninGuard]}
 ];
 
 @NgModule({

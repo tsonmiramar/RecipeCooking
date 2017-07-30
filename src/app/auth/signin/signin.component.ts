@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params} from '@angular/router';
 
 import { AuthService } from '../auth.service';
 import * as firebase from 'firebase';
@@ -14,15 +14,10 @@ export class SigninComponent implements OnInit {
 
   signinForm: FormGroup;
   errorMessage: {'email': string, 'password': string} = { 'email': null, 'password': null };
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit() {
-    if ( this.authService.isAuthenticated() ){
-      this.router.navigate(['/']);
-    }
-    else{
-      this.buildForm();
-    }
+    this.buildForm();
   }
 
   onSubmit(){

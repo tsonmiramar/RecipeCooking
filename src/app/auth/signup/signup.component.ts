@@ -21,21 +21,16 @@ export class SignupComponent implements OnInit {
 
   onSubmit(){
     this.authService.signUpUser(this.signupForm.value['email'], this.signupForm.value['password'])
-    .then((response: Response)=>{
-        console.log(response);
-        alert('Sucessfully signup a user!');
-        this.router.navigate(['/signin']);
-    })
-    .catch((error: any)=>{
-      console.log(error.code);
-      alert('Signup Failed!');
-      if (error.code === 'auth/weak-password'){
-        this.errorMessage.password = (<Error>error).message;
-      }
-      else {
-        this.errorMessage.email = (<Error>error).message;
-      }
-    })
+      .catch((error: any)=>{
+        console.log(error.code);
+        alert('Signup Failed!');
+        if (error.code === 'auth/weak-password'){
+          this.errorMessage.password = (<Error>error).message;
+        }
+        else {
+          this.errorMessage.email = (<Error>error).message;
+        }
+      })
   }
 
   private buildForm(){
