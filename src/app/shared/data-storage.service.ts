@@ -31,12 +31,15 @@ export class DataStorageService {
     this.http.get('https://recipecooking-fce59.firebaseio.com/'+userId+'.json?auth='+authToken)
     .map((response:Response)=>{
       const recipes: Recipe[] = response.json();
-      for ( let recipe of recipes){
-        if (!recipe.ingredients){
-          recipe.ingredients = [];
+      if ( !recipes ) return [];
+      else {
+        for ( let recipe of recipes){
+          if (!recipe.ingredients){
+            recipe.ingredients = [];
+          }
         }
+        return recipes; 
       }
-      return recipes;
     })
     .subscribe((recipes: Recipe[])=>{
         this.recipeService.setRecipes(recipes);

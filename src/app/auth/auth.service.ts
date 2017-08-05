@@ -8,7 +8,7 @@ export class AuthService {
 
   signUpUser(email:string, password:string){
     return firebase.auth().createUserWithEmailAndPassword(email,password)
-      .then((response: Response)=>{
+      .then((response: any)=>{
         console.log(response);
         alert('Sucessfully signup a user!');
         this.router.navigate(['/signin']);
